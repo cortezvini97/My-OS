@@ -6,8 +6,9 @@ section .text
     dd - (0x1BADB002+0x00)
 
     global start
+    extern _start_kernel
 
 start:
     cli
-    mov word [0xB8000],   0x0748
+    call _start_kernel
     hlt

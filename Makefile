@@ -3,7 +3,7 @@ ASFLAGS = -f elf32
 LINKER = ld
 LDFLAGS = -m elf_i386 -T src/link.ld
 
-OBJS = build/boot.o
+OBJS = build/boot.o build/kernel.o
 OUTPUT = lyricos/boot/kernel.bin
 
 all:$(OBJS)
@@ -14,6 +14,10 @@ all:$(OBJS)
 build/boot.o:src/boot/boot.asm
 	mkdir -p build
 	$(ASSEMBLER) $(ASFLAGS) -o build/boot.o src/boot/boot.asm
+
+build/kernel.o:src/kernel/arch/x86/kernel.asm
+	mkdir -p build
+	$(ASSEMBLER) $(ASFLAGS) -o build/kernel.o src/kernel/arch/x86/kernel.asm
 
 build:all
 	rm build/ -r -f
@@ -33,6 +37,6 @@ clean:
 	rm lyricos/ -r -f
 run:
 	qemu-system-x86_64 -cdrom dist/lyricos.iso
-	
+
 runbuild:build
 	qemu-system-x86_64 -cdrom dist/lyricos.iso

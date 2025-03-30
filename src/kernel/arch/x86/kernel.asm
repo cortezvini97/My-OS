@@ -1,16 +1,7 @@
 section .text
     global _start_kernel
+    extern main_kernel
 
 _start_kernel:
-    mov word [0xB8000],   0x0748
-    mov word [0xB8000+2], 0x0765
-    mov word [0xB8000+4], 0x076C
-    mov word [0xB8000+6], 0x076C
-    mov word [0xB8000+8], 0x076F
-    mov word [0xB8000+10], 0x0720
-    mov word [0xB8000+12], 0x0757
-    mov word [0xB8000+14], 0x076F
-    mov word [0xB8000+16], 0x0772
-    mov word [0xB8000+18], 0x076C
-    mov word [0xB8000+20], 0x0764
+    call main_kernel
     hlt

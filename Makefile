@@ -3,7 +3,10 @@ ASFLAGS = -f elf32
 LINKER = ld
 LDFLAGS = -m elf_i386 -T src/link.ld
 
-OBJS = build/boot.o build/kernel.o
+COMPILER = gcc
+CFLAGS = -m32 -c -I src/kernel/drivers/inc -I src/libs/inc -ffreestanding
+
+OBJS = build/boot.o build/kernel.o build/kmain.o
 OUTPUT = lyricos/boot/kernel.bin
 
 all:$(OBJS)
@@ -16,8 +19,10 @@ build/boot.o:src/boot/boot.asm
 	$(ASSEMBLER) $(ASFLAGS) -o build/boot.o src/boot/boot.asm
 
 build/kernel.o:src/kernel/arch/x86/kernel.asm
-	mkdir -p build
 	$(ASSEMBLER) $(ASFLAGS) -o build/kernel.o src/kernel/arch/x86/kernel.asm
+
+build/kmain.o:src/kernel/arch/x86/kernel.c
+	$(COMPILER) $(CFLAGS) src/kernel/arch/x86/kernel.c -o build/kmain.o
 
 build:all
 	rm build/ -r -f

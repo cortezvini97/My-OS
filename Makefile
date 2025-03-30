@@ -6,7 +6,7 @@ LDFLAGS = -m elf_i386 -T src/link.ld
 COMPILER = gcc
 CFLAGS = -m32 -c -I src/kernel/drivers/inc -I src/libs/inc -ffreestanding
 
-OBJS = build/boot.o build/kernel.o build/kmain.o
+OBJS = build/boot.o build/kernel.o build/kmain.o build/video.o
 OUTPUT = lyricos/boot/kernel.bin
 
 all:$(OBJS)
@@ -23,6 +23,9 @@ build/kernel.o:src/kernel/arch/x86/kernel.asm
 
 build/kmain.o:src/kernel/arch/x86/kernel.c
 	$(COMPILER) $(CFLAGS) src/kernel/arch/x86/kernel.c -o build/kmain.o
+
+build/video.o:src/kernel/drivers/video.c
+	$(COMPILER) $(CFLAGS) src/kernel/drivers/video.c -o build/video.o
 
 build:all
 	rm build/ -r -f

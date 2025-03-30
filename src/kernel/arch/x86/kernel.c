@@ -1,5 +1,7 @@
+#include "types.h"
+
 void main_kernel(){
-    char* vidmen = (char*)0xB8000;
+    string vidmen = (string)0xB8000;
     vidmen[0] = 'H';
     vidmen[1] = 0x07;
     vidmen[2] = 'e';

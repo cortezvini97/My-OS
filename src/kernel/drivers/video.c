@@ -3,7 +3,7 @@
 int cursorX = 0, cursorY = 0;
 const uint8 sw = 80,sh = 30,sd = 2;
 
-int defaultcolor = 0x0F;
+int color = 0x0F;
 
 void clearLine(uint8 from,uint8 to)
 {
@@ -11,9 +11,23 @@ void clearLine(uint8 from,uint8 to)
     char* vidmem=(char*)0xb8000;
     for(i;i<(sw*to*sd);i++)
     {
-        vidmem[(i / 2)*2 + 1 ] = defaultcolor ;
+        vidmem[(i / 2)*2 + 1 ] = color;
         vidmem[(i / 2)*2 ] = 0;
     }
+}
+
+void updateCursor(){
+    unsigned temp;
+
+    if(cursorX == 0){
+        cursorX = 1;
+    }
+
+    temp = cursorY * sw + cursorX-1;
+    outportb(0x3D4, 14);
+    outportb(0x3D5, temp >> 8);
+    outportb(0x3D4, 15);
+    outportb(0x3D5, temp);
 }
 
 void clearScreen()
@@ -21,9 +35,10 @@ void clearScreen()
     clearLine(0,sh-1);
     cursorX = 0;
     cursorY = 0;
+    updateCursor();
 }
 
-void printc(char c, int color){
+void printc(char c){
     string vidmem = (string)0xB8000;
 
     switch(c)
@@ -48,4 +63,10 @@ void printc(char c, int color){
             cursorX++; 
             break;
     }
+    if(cursorX >= sw)                                                                   
+    {
+        cursorX = 0;                                                                
+        cursorY++;                                                                    
+    }
+    updateCursor();
 }

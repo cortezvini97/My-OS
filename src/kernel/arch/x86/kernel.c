@@ -12,4 +12,10 @@ void main_kernel(){
     printc('r', 0x0C);  // Vermelho claro
     printc('l', 0x0E);  // Amarelo claro
     printc('d', 0x0F);  // Branco brilhante
+    clearScreen();
+    printc('H', 0x0F);
+    printc('e', 0x0F); 
+    printc('l', 0x0F);
+    printc('l', 0x0F);
+    printc('o', 0x0F);  
 }

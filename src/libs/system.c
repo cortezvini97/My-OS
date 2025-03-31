@@ -2,6 +2,8 @@
 
 extern uint8 system_inportb(uint16 _port);
 extern void system_outportb(uint16 _port, uint8 _data);
+extern void system_shutdown();
+extern void system_reboot();
 
 uint8 inportb(uint16 port){
     return system_inportb(port);
@@ -37,4 +39,12 @@ void sleep(unsigned int delay) {
         break;
     }
     
+}
+
+void shutdown(){
+    system_shutdown();
+}
+
+void reboot(){
+    system_reboot();
 }

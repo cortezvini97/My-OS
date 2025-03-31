@@ -3,6 +3,8 @@ section .text
     extern main_kernel
     extern system_inportb
     extern system_outportb
+    extern system_shutdown
+    extern system_reboot
 
 _start_kernel:
     call main_kernel
@@ -21,3 +23,17 @@ system_outportb:
     mov al, byte [esp + 8] 
     out dx, al      
     ret                   
+
+system_shutdown:
+    mov dx, 0x604      ; Porta usada pelo ACPI no QEMU
+    mov ax, 0x2000     ; Comando para desligar
+    out dx, ax
+    hlt    
+
+
+
+system_reboot:
+    mov dx, 0x64
+    mov al, 0xFE
+    out dx, al
+    hlt

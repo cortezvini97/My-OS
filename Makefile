@@ -4,9 +4,9 @@ LINKER = ld
 LDFLAGS = -m elf_i386 -T src/link.ld
 
 COMPILER = gcc
-CFLAGS = -m32 -c -I src/kernel/drivers/inc -I src/libs/inc -ffreestanding
+CFLAGS = -m32 -c -I src/kernel/drivers/inc -I src/kernel/arch/x86/inc -I src/libs/inc -ffreestanding
 
-OBJS = build/boot.o build/kernel.o build/kmain.o build/video.o build/system.o build/stdio.o
+OBJS = build/boot.o build/kernel.o build/kmain.o build/video.o build/system.o build/stdio.o build/memory.o build/string.o build/keyboard.o
 OUTPUT = lyricos/boot/kernel.bin
 
 all:$(OBJS)
@@ -32,6 +32,15 @@ build/system.o:src/libs/system.c
 
 build/stdio.o:src/libs/stdio.c
 	$(COMPILER) $(CFLAGS) src/libs/stdio.c -o build/stdio.o
+
+build/string.o:src/libs/string.c
+	$(COMPILER) $(CFLAGS) src/libs/string.c -o build/string.o
+
+build/memory.o:src/libs/memory.c
+	$(COMPILER) $(CFLAGS) src/libs/memory.c -o build/memory.o
+
+build/keyboard.o:src/kernel/drivers/keyboard.c
+	$(COMPILER) $(CFLAGS) src/kernel/drivers/keyboard.c -o build/keyboard.o
 
 build:all
 	rm build/ -r -f

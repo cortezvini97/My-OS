@@ -1,5 +1,5 @@
+#include "keyboard.h"
 #include "stdio.h"
-#include "video.h"
 
 void main_kernel(){
     printf("Bem-vindo ao Lyric OS");
@@ -8,8 +8,14 @@ void main_kernel(){
         printf(".");
     }
     clearScreen();
-    int a = 20;
-    int b = 40;
-    int result = a + b;
-    printf("Resultado: %d", result);
+
+    string ch = (string) malloc(200);
+
+    do {
+        ch = keyboardcall();
+        printf("\n%s\n", ch);
+        if(strEql(ch, "clear")){
+            clearScreen();
+        }
+    }while(1);
 }

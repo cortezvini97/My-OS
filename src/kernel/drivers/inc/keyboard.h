@@ -2,10 +2,10 @@
 #define KEYBOARD_H
 
 #include "types.h"
-#include "system.h"  // Importa a definição de callinportb
+#include "system.h"
 
-#define KEYBOARD_PORT 0x60  // Porta do teclado
+#define KEYBOARD_PORT 0x60
 
-uint8 keyboardcall();  // Declaração da função que lê o teclado
+uint8 keyboardcall();
 
-#endif // KEYBOARD_H
+#endif

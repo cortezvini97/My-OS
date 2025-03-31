@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "idt.h": "c"
+        "idt.h": "c",
+        "array": "c",
+        "memory": "c",
+        "functional": "c",
+        "tuple": "c",
+        "utility": "c"
     }
 }

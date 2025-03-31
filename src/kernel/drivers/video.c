@@ -1,4 +1,5 @@
 #include "video.h"
+#include "stdio.h"
 
 int cursorX = 0, cursorY = 0;
 const uint8 sw = 80,sh = 30,sd = 2;
@@ -38,6 +39,36 @@ void clearScreen()
     updateCursor();
 }
 
+void scrollUp(uint8 lineNumber)
+{
+    string vidmem = (string)0xb8000;
+    uint16 i = 0;
+    clearLine(0,lineNumber-1);                                    
+    for (i;i<sw*(sh-1)*2;i++)
+    {
+        vidmem[i] = vidmem[i+sw*2*lineNumber];
+    }
+    clearLine(sh-1-lineNumber,sh-1);
+    if((cursorY - lineNumber) < 0 ) 
+    {
+        cursorY = 0;
+        cursorX = 0;
+    } 
+    else 
+    {
+        cursorY -= lineNumber;
+    }
+    updateCursor();
+}
+
+void newLineCheck()
+{
+    if(cursorY >=sh-1)
+    {
+        scrollUp(1);
+    }
+}
+
 void printc(char c){
     string vidmem = (string)0xB8000;
 
@@ -69,4 +100,21 @@ void printc(char c){
         cursorY++;                                                                    
     }
     updateCursor();
+    newLineCheck();
+}
+
+void set_screen_color(int text_color,int bg_color)
+{
+	color =  (bg_color << 4) | text_color;;
+}
+void set_screen_color_from_color_code(int color_code)
+{
+	color = color_code;
+}
+void print_colored(string ch,int text_color,int bg_color)
+{
+	int current_color = color;
+	set_screen_color(text_color,bg_color);
+	printf(ch);
+	set_screen_color_from_color_code(current_color);
 }

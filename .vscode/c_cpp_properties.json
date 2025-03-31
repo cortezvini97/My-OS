@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src/libs/inc",
                 "${workspaceFolder}/src/kernel/drivers/inc",
-                "${workspaceFolder}/src/kernel/arch/x86/inc"
+                "${workspaceFolder}/src/kernel/arch/x86/inc",
+                "${workspaceFolder}/src/kernel/inc"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

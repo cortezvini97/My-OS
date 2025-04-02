@@ -1,10 +1,10 @@
 #include "stdio.h"
 #include "system.h"
 
-void int_to_str(int num, char *str) {
+void int_to_str_padded(int num, char *str, int min_width, char pad_char) {
     int i = 0;
     int isNegative = 0;
-
+    
     if (num < 0) {
         isNegative = 1;
         num = -num;
@@ -12,15 +12,21 @@ void int_to_str(int num, char *str) {
 
     do {
         str[i++] = (num % 10) + '0';
-        num = num / 10;
+        num /= 10;
     } while (num != 0);
 
     if (isNegative) {
         str[i++] = '-';
     }
 
+    // Preenchimento com caracteres extras se necessário
+    while (i < min_width) {
+        str[i++] = pad_char;
+    }
+
     str[i] = '\0';
 
+    // Inverter string
     for (int j = 0; j < i / 2; j++) {
         char temp = str[j];
         str[j] = str[i - j - 1];
@@ -38,11 +44,25 @@ int printf(const char *format, ...) {
 
     for (int i = 0; format[i] != '\0'; i++) {
         if (format[i] == '%' && format[i+1] != '\0') {
-            i++; 
+            i++;
+
+            int min_width = 0;
+            char pad_char = ' ';
+
+            // Verifica se há um padding (ex: %02d)
+            if (format[i] == '0') {
+                pad_char = '0';
+                i++; 
+            }
+            while (format[i] >= '0' && format[i] <= '9') {
+                min_width = min_width * 10 + (format[i] - '0');
+                i++;
+            }
+
             switch (format[i]) {
                 case 'd': { 
                     int num = va_arg(args, int);
-                    int_to_str(num, temp);
+                    int_to_str_padded(num, temp, min_width, pad_char);
                     for (int j = 0; temp[j] != '\0'; j++) {
                         buffer[index++] = temp[j];
                     }

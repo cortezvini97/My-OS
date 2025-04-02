@@ -5,6 +5,8 @@ extern void system_outportb(uint16 _port, uint8 _data);
 extern void system_shutdown();
 extern void system_reboot();
 
+int sys_timezone = 0;
+
 uint8 inportb(uint16 port){
     return system_inportb(port);
 }
@@ -26,6 +28,19 @@ int32 write(int fd, const char *buf, uint32 count){
     }
 
     return bytes_written;
+}
+
+uint8 read_rtc_register(uint8 reg) {
+    outportb(0x70, reg);
+    return inportb(0x71);
+}
+
+void set_timezone(int timezone){
+    sys_timezone = timezone;
+}
+
+int get_systimezone(){
+    return sys_timezone;
 }
 
 void sleep(unsigned int delay) {

@@ -3,52 +3,87 @@
 void launch_shell(int n, string name){
     string ch = (string) malloc(200);
     string defaultName = "LYRICOS";
+    char currentName[50]; // Buffer para armazenar o nome do shell
+    memory_copy(name, currentName, 50); // Copia o nome inicial para o buffer
+
     do{
-        printf("%s (%d)> ", name, n);
+        printf("%s (%d)> ", currentName, n);
         ch = keyboardcall();
+
         if(strEql(ch, "changename")){
             printf("\nDigite o nome do Shell: ");
             string name_shell = keyboardcall();
             clearScreen();
+
             if(!strEql(name_shell, "default")){
-                name = name_shell;
-            }else {
-                name = defaultName;
+                memory_copy(name_shell, currentName, 50);
+            } else {
+                memory_copy(defaultName, currentName, 50);
             }
-                
-        }else if(strEql(ch,"echo")){
+
+        } else if(strEql(ch, "echo")){
             echo();
-        }
-        else if(strEql(ch,"help") || strEql(ch, "")){
+        } else if(strEql(ch, "help") || strEql(ch, "")){
             help();
-        }else if(strEql(ch, "sum")){
+        } else if(strEql(ch, "getdatetime")){
+            kernelGetDateApi();
+        } else if(strEql(ch, "changetimezone")){
+            changeTimezone();
+        } else if(strEql(ch, "sum")){
             sum();
-        }else if(strEql(ch, "multiply")){
+        } else if(strEql(ch, "multiply")){
             multiply();
-        }else if(strEql(ch, "clear")){
+        } else if(strEql(ch, "clear")){
             clearScreen();
-        }else if(strEql(ch, "color"))
-        {
+        } else if(strEql(ch, "color")){
             set_background_color();
-        }else if(strEql(ch, "shutdown")){
+        } else if(strEql(ch, "shutdown")){
             clearScreen();
             kernelShutdownApi();
-        }else if(strEql(ch, "reboot")){
+        } else if(strEql(ch, "reboot")){
             clearScreen();
             kernelRebootApi();
-        }else if(strEql(ch,"exit")){
+        } else if(strEql(ch, "exit")){
             printf("\nbye\n");
-        }else {
+        } else {
             printf("\n Invalid command !\n");
         }
-    }while (!strEql(ch, "exit"));
+
+    } while (!strEql(ch, "exit"));
     
     handle_user_input();
 }
 
+
+void changeTimezone(){
+    printf("\n");
+    printf("UTC                      America/Sao_Paulo         America/Brasilia\n");
+    printf("America/New_York         America/Los_Angeles       America/Chicago\n");
+    printf("America/Denver           America/Mexico_City       America/Buenos_Aires\n");
+    printf("America/Lima             America/Bogota            Europe/London\n");
+    printf("Europe/Berlin            Europe/Paris              Europe/Madrid\n");
+    printf("Europe/Rome              Europe/Moscow             Europe/Istanbul\n");
+    printf("Asia/Tokyo               Asia/Shanghai             Asia/Hong_Kong\n");
+    printf("Asia/Singapore           Asia/Dubai                Asia/Kolkata\n");
+    printf("Asia/Jakarta             Asia/Hong_Kong            Asia/Singapore\n");
+    printf("Australia/Sydney         Australia/Melbourne       Australia/Brisbane\n");
+    printf("Australia/Perth          Pacific/Auckland          Africa/Johannesburg\n");
+    printf("Africa/Cairo             Africa/Lagos              Antarctica/Palmer\n");
+    printf("Indian/Maldives\n\n");
+    printf("Digite o timezone: ");
+    string str = keyboardcall(); 
+
+    if(strEql(str, ""))
+    {
+        printf("\nNão pode ser vazio!\n");
+        changeTimezone();
+    }
+    setTimezone(str);
+}
+
 void echo()
 {
-    printf("\nEnter text Value: \n");
+    printf("\nEnter text Value: ");
 	string str = keyboardcall();
     if(strEql(str, ""))
     {
@@ -76,7 +111,9 @@ void sum()
 void help()
 {
     printf("\nchangename            : Trocar nome do shell");
-    printf("\nsum                   : Calular Soma");
+    printf("\nchangetimezone        : Mudar fuso");
+    printf("\ngetdatetime           : Exibir data e hora em tempo real");
+    printf("\nsum                   : Mudar Soma");
 	printf("\nmultiply              : Multiplicar");
 	printf("\nclear                 : Limpar tela");
     printf("\nexit                  : Sair do Shell");

@@ -6,7 +6,7 @@ LDFLAGS = -m elf_i386 -T src/link.ld
 COMPILER = gcc
 CFLAGS = -m32 -c -I src/kernel/drivers/inc -I src/kernel/arch/x86/inc -I src/libs/inc -I src/kernel/inc -ffreestanding
 
-OBJS = build/boot.o build/kernel.o build/kmain.o build/video.o build/system.o build/stdio.o build/memory.o build/string.o build/keyboard.o build/shell.o
+OBJS = build/boot.o build/kernel.o build/kmain.o build/video.o build/system.o build/stdio.o build/memory.o build/string.o build/keyboard.o build/shell.o build/time.o
 OUTPUT = lyricos/boot/kernel.bin
 
 all:$(OBJS)
@@ -44,6 +44,9 @@ build/keyboard.o:src/kernel/drivers/keyboard.c
 
 build/shell.o:src/kernel/shell.c
 	$(COMPILER) $(CFLAGS) src/kernel/shell.c -o build/shell.o
+
+build/time.o:src/libs/time.c
+	$(COMPILER) $(CFLAGS) src/libs/time.c -o build/time.o
 
 build:all
 	rm build/ -r -f

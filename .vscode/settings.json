@@ -5,6 +5,9 @@
         "memory": "c",
         "functional": "c",
         "tuple": "c",
-        "utility": "c"
+        "utility": "c",
+        "stdio.h": "c",
+        "system.h": "c",
+        "shell.h": "c"
     }
 }
